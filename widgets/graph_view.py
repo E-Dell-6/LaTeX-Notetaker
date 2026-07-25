@@ -1,13 +1,3 @@
-"""
-graph_view.py
-
-Interactive graph visualization of notes (nodes) and their [[wiki-link]]
-derived connections (edges). Uses a lightweight iterative force-directed
-layout (spring/repulsion) computed on the fly, no external graph library
-required. Click-and-drag nodes to rearrange, double-click a node to open
-that note.
-"""
-
 import math
 import random
 
@@ -30,7 +20,7 @@ class GraphNodeItem(QGraphicsEllipseItem):
         super().__init__(-NODE_RADIUS, -NODE_RADIUS, NODE_RADIUS * 2, NODE_RADIUS * 2)
         self.note_id = note_id
         self._on_double_click = on_double_click
-        self.edges = []  # list of GraphEdgeItem
+        self.edges = []                         
 
         self.setBrush(QBrush(NODE_COLOR))
         self.setPen(QPen(NODE_BORDER, 2))
@@ -98,7 +88,7 @@ class GraphView(QGraphicsView):
         if not notes:
             return
 
-        # Seed positions in a circle, then relax with a simple force layout.
+                                                                            
         n = len(notes)
         radius = max(180, 60 * n)
         positions = {}
@@ -134,12 +124,11 @@ class GraphView(QGraphicsView):
 
     @staticmethod
     def _relax(positions, links, iterations=150, k=140.0, repulsion=9000.0):
-        """Very small Fruchterman-Reingold-style force layout."""
         ids = list(positions.keys())
         for _ in range(iterations):
             forces = {nid: QPointF(0, 0) for nid in ids}
 
-            # Repulsion between all pairs.
+                                          
             for i, a in enumerate(ids):
                 for b in ids[i + 1:]:
                     delta = positions[a] - positions[b]
@@ -149,7 +138,7 @@ class GraphView(QGraphicsView):
                     forces[a] += QPointF(fx, fy)
                     forces[b] -= QPointF(fx, fy)
 
-            # Spring attraction along edges.
+                                            
             for source_id, target_id in links:
                 if source_id not in positions or target_id not in positions:
                     continue

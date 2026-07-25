@@ -1,16 +1,8 @@
-"""
-main.py
-
-Entry point for the LaTeX Notetaking App.
-
-Run with:
-    python main.py
-"""
-
 import sys
 import os
 
-import PyQt6.QtWebEngineWidgets  # noqa: F401
+                                                                         
+import PyQt6.QtWebEngineWidgets              
 
 from PyQt6.QtWidgets import QApplication
 

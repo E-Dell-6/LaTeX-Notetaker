@@ -1,11 +1,3 @@
-"""
-note_editor.py
-
-Modal-ish editor for a single note: a plain-text/LaTeX source pane on the
-left, a live KaTeX-rendered preview on the right, and a backlinks panel
-at the bottom showing which other notes reference this one.
-"""
-
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QSplitter, QTextEdit, QLineEdit,
@@ -16,8 +8,8 @@ from widgets.katex_view import KatexPreview
 
 
 class NoteEditorDialog(QDialog):
-    note_saved = pyqtSignal(int)          # note_id
-    open_note_requested = pyqtSignal(int)  # follow a backlink / wikilink
+    note_saved = pyqtSignal(int)                   
+    open_note_requested = pyqtSignal(int)                                
 
     def __init__(self, db, note_id: int, parent=None):
         super().__init__(parent)

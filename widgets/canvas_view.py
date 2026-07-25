@@ -1,12 +1,3 @@
-"""
-canvas_view.py
-
-Infinite canvas built on QGraphicsView/QGraphicsScene. Notes are draggable
-rectangle items ("cards") showing a title and a short content snippet.
-Pan with middle-mouse / space-drag, zoom with the mouse wheel. Double-click
-a card to open the full editor; right-click empty space to create a note.
-"""
-
 from PyQt6.QtCore import Qt, QRectF, pyqtSignal
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont, QAction
 from PyQt6.QtWidgets import (
@@ -20,7 +11,7 @@ CARD_BORDER_SELECTED = QColor("#8ab4ff")
 TITLE_COLOR = QColor("#f0f0f5")
 SNIPPET_COLOR = QColor("#a8a8b8")
 
-SCENE_EXTENT = 20000  # "infinite" canvas bounds
+SCENE_EXTENT = 20000                            
 
 
 class NoteCardItem(QGraphicsRectItem):
@@ -82,10 +73,10 @@ class NoteCardItem(QGraphicsRectItem):
 
 
 class InfiniteCanvasView(QGraphicsView):
-    note_move_requested = pyqtSignal(int, float, float)   # note_id, x, y
-    note_open_requested = pyqtSignal(int)                  # note_id
-    create_note_requested = pyqtSignal(float, float)       # scene x, y
-    delete_note_requested = pyqtSignal(int)                # note_id
+    note_move_requested = pyqtSignal(int, float, float)                  
+    note_open_requested = pyqtSignal(int)                           
+    create_note_requested = pyqtSignal(float, float)                   
+    delete_note_requested = pyqtSignal(int)                         
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -101,8 +92,7 @@ class InfiniteCanvasView(QGraphicsView):
         self._panning = False
         self._pan_start = None
 
-    # -- population --
-
+                      
     def load_notes(self, notes):
         self.scene.clear()
         self._items_by_note.clear()
@@ -130,8 +120,7 @@ class InfiniteCanvasView(QGraphicsView):
         if item is not None:
             self.scene.removeItem(item)
 
-    # -- background grid --
-
+                           
     def drawBackground(self, painter: QPainter, rect: QRectF):
         painter.fillRect(rect, self.backgroundBrush())
         grid = 40
@@ -149,8 +138,7 @@ class InfiniteCanvasView(QGraphicsView):
             painter.drawLine(int(rect.left()), int(y), int(rect.right()), int(y))
             y += grid
 
-    # -- zoom / pan --
-
+                      
     def wheelEvent(self, event):
         factor = 1.15 if event.angleDelta().y() > 0 else 1 / 1.15
         self.scale(factor, factor)

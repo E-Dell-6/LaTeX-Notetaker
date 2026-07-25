@@ -1,16 +1,3 @@
-"""
-katex_view.py
-
-Embeds a QWebEngineView that renders note content as HTML with inline/
-display LaTeX handled by KaTeX's auto-render extension (loaded from CDN).
-
-Note syntax supported:
-    $...$      inline math
-    $$...$$    display math
-    [[Title]]  wiki-link to another note (rendered as a styled span)
-    plain text -> paragraphs, blank line = new paragraph
-"""
-
 import html
 import re
 
@@ -62,10 +49,8 @@ PAGE_TEMPLATE = """
 
 
 def note_content_to_html(content: str) -> str:
-    """Escape user text, then re-insert wiki-link spans, split into paragraphs.
-    Math delimiters ($...$, $$...$$) are left untouched for KaTeX auto-render."""
     escaped = html.escape(content)
-    # Restore [[ ]] which html.escape doesn't touch, wrap as spans.
+                                                                   
     def repl(m):
         title = m.group(1)
         return f'<span class="wikilink" data-title="{html.escape(title)}">[[{html.escape(title)}]]</span>'
@@ -76,7 +61,6 @@ def note_content_to_html(content: str) -> str:
 
 
 class KatexPreview(QWebEngineView):
-    """Read-only live preview of a note's rendered LaTeX/markdown-ish content."""
 
     def __init__(self, parent=None):
         super().__init__(parent)

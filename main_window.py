@@ -1,10 +1,3 @@
-"""
-main_window.py
-
-Top-level QMainWindow that hosts the infinite canvas and the graph view in
-tabs, plus a toolbar for creating notes and switching views.
-"""
-
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QKeySequence
 from PyQt6.QtWidgets import (
@@ -25,7 +18,7 @@ class MainWindow(QMainWindow):
         self.resize(1200, 780)
 
         self.db = Database(db_path)
-        self._open_editors = {}  # note_id -> dialog, so double-open focuses existing
+        self._open_editors = {}                                                      
 
         self.canvas = InfiniteCanvasView()
         self.graph = GraphView()
@@ -46,7 +39,7 @@ class MainWindow(QMainWindow):
             self._seed_example_notes()
             self.reload_all()
 
-
+                                             
     def _build_toolbar(self):
         toolbar = QToolBar("Main")
         toolbar.setMovable(False)
@@ -81,9 +74,8 @@ class MainWindow(QMainWindow):
         self.graph.node_open_requested.connect(self.open_note)
 
     def _seed_example_notes(self):
-        # The two notes link to each other, so create both empty first, then
-        # fill in the cross-linking content -- otherwise resolving a link to
-        # a not-yet-created note would auto-create a duplicate stub.
+                                                                            
+                                                                            
         welcome = self.db.create_note("Welcome", "", x=-160, y=-80)
         graph = self.db.create_note("Graph Theory", "", x=220, y=40)
 
@@ -100,8 +92,7 @@ class MainWindow(QMainWindow):
             "See also [[Welcome]].",
         )
 
-    # ---------------- data reload ----------------
-
+                                                   
     def reload_all(self):
         notes = self.db.all_notes()
         self.canvas.load_notes(notes)
@@ -109,11 +100,10 @@ class MainWindow(QMainWindow):
             self.graph.load_graph(notes, self.db.all_links())
 
     def _on_tab_changed(self, index):
-        if index == 1:  # Graph tab
+        if index == 1:             
             self.graph.load_graph(self.db.all_notes(), self.db.all_links())
 
-    # ---------------- note actions ----------------
-
+                                                    
     def create_note(self, x: float, y: float):
         note = self.db.create_note("Untitled", "", x=x, y=y)
         self.canvas.add_or_update_card(note)
@@ -148,8 +138,8 @@ class MainWindow(QMainWindow):
         note = self.db.get_note(note_id)
         if note is not None:
             self.canvas.add_or_update_card(note)
-        # Titles/links may have changed elsewhere (auto-created stub notes), so
-        # refresh the whole canvas set and, if visible, the graph.
+                                                                               
+                                                                  
         self.canvas.load_notes(self.db.all_notes())
         if self.tabs.currentIndex() == 1:
             self.graph.load_graph(self.db.all_notes(), self.db.all_links())
@@ -163,7 +153,7 @@ class MainWindow(QMainWindow):
             return
         note = self.db.get_note_by_title(query)
         if note is None:
-            # fall back to partial match
+                                        
             matches = [n for n in self.db.all_notes() if query.lower() in n.title.lower()]
             note = matches[0] if matches else None
         if note is not None:

@@ -1,17 +1,3 @@
-"""
-database.py
-
-SQLite-backed data model for the LaTeX note-taking app.
-
-Schema:
-    notes(id, title, content, x, y, width, height, created_at, updated_at)
-    links(id, source_id, target_id, created_at)   -- backlink-style connections
-
-Links are derived automatically from [[Note Title]] style wiki-links found
-inside a note's content, but the table itself is generic so other kinds of
-graph metadata (manual links, tags-as-edges, etc.) could be layered on later.
-"""
-
 import sqlite3
 import re
 import time
@@ -69,7 +55,7 @@ class Database:
         )
         self.conn.commit()
 
-
+                                             
     def create_note(self, title: str, content: str = "", x: float = 0, y: float = 0) -> Note:
         now = time.time()
         cur = self.conn.execute(
@@ -124,10 +110,8 @@ class Database:
         self.conn.execute("DELETE FROM notes WHERE id = ?", (note_id,))
         self.conn.commit()
 
-
+                                                         
     def sync_links_for_note(self, note_id: int):
-        """Re-derive outgoing [[wiki-links]] for a note from its content and
-        rewrite the links table rows where this note is the source."""
         note = self.get_note(note_id)
         if note is None:
             return
@@ -140,6 +124,7 @@ class Database:
                 continue
             target = self.get_note_by_title(t)
             if target is None:
+                                                                                   
                 target = self.create_note(t, "", x=note.x + 260, y=note.y)
             if target.id != note_id:
                 target_ids.add(target.id)
@@ -173,7 +158,7 @@ class Database:
         rows = self.conn.execute("SELECT source_id, target_id FROM links").fetchall()
         return [(r["source_id"], r["target_id"]) for r in rows]
 
-
+                                               
     @staticmethod
     def _row_to_note(row: sqlite3.Row) -> Note:
         return Note(
